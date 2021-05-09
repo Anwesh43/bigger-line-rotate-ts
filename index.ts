@@ -202,3 +202,25 @@ class BiggerLineRotate {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    blr : BiggerLineRotate = new BiggerLineRotate()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.blr.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.blr.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.blr.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
