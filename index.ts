@@ -28,3 +28,37 @@ class ScaleUtil {
     }
 }
 
+class DrawingUtil {
+
+    static drawLine(context : CanvasRenderingContext2D, x1 : number, y1 : number, x2 : number, y2 : number) {
+        context.beginPath()
+        context.moveTo(x1, y1)
+        context.lineTo(x2, y2)
+        context.stroke()
+    }
+
+    static drawBiggerLineRotate(context : CanvasRenderingContext2D, scale : number) {
+        const size : number = Math.min(w, h) / sizeFactor 
+        const sf : number = ScaleUtil.sinify(scale)
+        const sf1 : number = ScaleUtil.divideScale(sf, 0, parts)
+        const sf2 : number = ScaleUtil.divideScale(sf, 1, parts)
+        const sf3 : number = ScaleUtil.divideScale(sf, 2, parts)
+        const sf4 : number = ScaleUtil.divideScale(sf, 3, parts)
+        context.save()
+        context.translate(w / 2, h / 2)
+        DrawingUtil.drawLine(context, -size + size * sf3, 0, -size + size * sf1, 0)
+        context.save()
+        context.rotate(sf4 * Math.PI / 2)
+        DrawingUtil.drawLine(context, 0, 0, 0, -size * sf2)
+        context.restore()
+        context.restore()
+    }
+
+    static drawBLRNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+        context.lineCap = 'round'
+        context.lineWidth = Math.min(w, h) / strokeFactor 
+        context.strokeStyle = colors[i]
+        DrawingUtil.drawBiggerLineRotate(context, scale)
+    }
+}
+
